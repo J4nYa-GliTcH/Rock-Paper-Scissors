@@ -40,7 +40,3 @@ function computerMove() {
   }
   return computerMove;
 }
-
-document.querySelector("#move-rock").addEventListener("click", function () {
-  alert("Hello World!");
-});
