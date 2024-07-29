@@ -10,12 +10,17 @@ document.querySelector(".move-scissors").addEventListener("click", () => {
 document.querySelector(".reset").addEventListener("click", () => {
   resetScore();
 });
+document.querySelector(".auto").addEventListener("click", () => {
+  autoPlay();
+});
 
 let score = JSON.parse(localStorage.getItem("score")) || {
   wins: 0,
   loss: 0,
   ties: 0,
 };
+let autoPlayOn = false;
+let intervalId;
 
 function pickComputerMove() {
   let computerMove = Math.random();
@@ -86,4 +91,17 @@ function resetScore() {
   score.loss = 0;
   score.ties = 0;
   showScore();
+}
+
+function autoPlay() {
+  if (!autoPlayOn) {
+    intervalId = setInterval(() => {
+      playerMove = pickComputerMove();
+      game(playerMove);
+    }, 1000);
+    autoPlayOn = true;
+  } else {
+    clearInterval(intervalId);
+    autoPlayOn = false;
+  }
 }
