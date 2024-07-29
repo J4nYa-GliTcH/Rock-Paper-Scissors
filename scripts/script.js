@@ -7,6 +7,15 @@ document.querySelector(".move-paper").addEventListener("click", () => {
 document.querySelector(".move-scissors").addEventListener("click", () => {
   game("scissors");
 });
+document.querySelector(".reset").addEventListener("click", () => {
+  resetScore();
+});
+
+let score = JSON.parse(localStorage.getItem("score")) || {
+  wins: 0,
+  loss: 0,
+  ties: 0,
+};
 
 function pickComputerMove() {
   let computerMove = Math.random();
@@ -48,9 +57,33 @@ function game(playerMove) {
       result = "Tie";
     }
   }
+
+  if (result === "Win") {
+    score.wins++;
+  } else if (result === "Loss") {
+    score.loss++;
+  } else {
+    score.ties++;
+  }
+
+  localStorage.setItem("score", JSON.stringify(score));
+
   document.querySelector(".result").innerHTML = result;
   document.querySelector(
     ".game-moves"
   ).innerHTML = `Player <img src="images/${playerMove}-emoji.png"> || <img src="images/${computerMove}-emoji.png"> Computer`;
-  return result;
+  showScore();
+}
+
+function showScore() {
+  document.querySelector(
+    ".score"
+  ).innerHTML = `Wins: ${score.wins} | Losses: ${score.loss} | Ties: ${score.ties}`;
+}
+
+function resetScore() {
+  score.wins = 0;
+  score.loss = 0;
+  score.ties = 0;
+  showScore();
 }
